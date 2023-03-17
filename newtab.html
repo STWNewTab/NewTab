@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>New Tab</title>
+    <style>
+    body {
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+        background-color: #d8f1d7;
+      }
+      #search-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      #search-btn {
+        background: url('Search.png') no-repeat center center;
+        background-size: contain;
+        border: none;
+        cursor: pointer;
+        height: 30px;
+        width: 40px;
+        margin-top: 1rem;
+      }
+      .options-btn {
+        background-color: #ffffff; /* Green */
+        border-width: 3px;
+        color: rgb(0, 0, 0);
+        padding: 12px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 24px;
+        margin: 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #search-input {
+        font-size: 1.5rem;
+        font-family:Verdana;
+        padding: 2rem;
+        width: 80%;
+        max-width: 800px;
+        margin-bottom: 1rem;
+        border: 5px solid rgb(0, 0, 0);
+        border-radius: 1000px;
+      }
+      #search-form {
+        text-align: center;
+        width: 90%;
+        max-width: 800px;
+      }
+      #datetime {
+        font-size: 48px;
+        font-family: Verdana;
+        color: rgb(0, 0, 0);
+        margin-bottom: 2rem;
+      }
+      #progress-bar-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 30px;
+      }
+      #progress-bar {
+        width: 0%;
+        height: 30px;
+        background-color: rgb(18, 190, 18);
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+    }
+    t {
+        text-align:center;
+        font-family:Verdana;
+        font-size:24px;
+        color: #FFFFFF;
+        font-weight: 54;
+        margin-top:100px;
+        justify-content:flex-start;
+      }
+      tt {
+        text-align:center;
+        font-family:Verdana;
+        font-size:24px;
+        color: #000000;
+        font-weight: 54;
+        margin-top:100px;
+        justify-content:flex-start;
+        z-index: 1;
+        position:absolute;
+      }
+      tb {
+        text-align:center;
+        font-family:Verdana;
+        font-size:24px;
+        color: #000000;
+        font-weight: 54;
+        margin-top:159px;
+        justify-content:flex-start;
+        z-index:0;
+        position:absolute;
+      }
+    </style>
+    <link rel="icon" href="SaveTheEarthTabIcon.jpg">
+  </head>
+  <body>
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+    <button onclick="window.open('options.html')", class="options-btn">Options</button>
+    <div id="reset-count" class="text-style"></div>
+    <div id="time-to-reset"></div>
+    <div id="search-container">
+      <div id="datetime"></div>
+      <div id="search-form">
+        <form action="https://www.google.com/search" method="get">
+          <input type="text" id="search-input" name="q" placeholder="Search the web">
+          <button type="submit" id="search-btn"></button>
+        </form>
+      </div>
+    </div>
+    <script>
+    var progressBar = document.getElementById("progress-bar");
+    var currentProgress = Number(localStorage.getItem("progress")) || 0;
+    var progressBarWidth = currentProgress + "%";
+    progressBar.style.width = progressBarWidth;
+
+        var currentProgress = Number(localStorage.getItem("progress")) || 0;
+        var progressResetCount = Number(localStorage.getItem("resetCount")) || 0;
+        currentProgress += 1;
+        if (currentProgress > 100) {
+            currentProgress = 0;
+            progressResetCount += 1;
+        }
+        localStorage.setItem("progress", currentProgress);
+        localStorage.setItem("resetCount", progressResetCount);
+
+        var progressBarContainer = document.getElementById("progress-bar-container");
+        var resetCountElement = document.createElement("tt");
+        resetCountElement.id = "reset-count";
+        resetCountElement.textContent = "You planted " + progressResetCount + " trees.";
+
+        var timeToResetElement = document.createElement("tb");
+        timeToResetElement.id = "time-to-reset";
+        timeToResetElement.textContent = "You are " + currentProgress + "% to another tree! For now, this is not functional. ";
+
+        treeCounter = 0;
+        progressBarContainer.appendChild(resetCountElement);
+        progressBarContainer.appendChild(timeToResetElement);
+    </script>
+    <script>
+      const savedBackgroundColor = localStorage.getItem('background-color');
+      
+      const savedTextColor = localStorage.getItem('text-color');
+      if (savedTextColor) {
+        document.getElementById('datetime').style.color = savedTextColor;
+      }
+      const treeBackground = localStorage.getItem('tree-background');
+      if (treeBackground == 'true') {
+        const backgroundImage = 'backgroundNewTab.jpg';
+        document.body.style.backgroundImage = `url(${backgroundImage})`;
+      }
+      else if(savedBackgroundColor){
+        document.body.style.backgroundColor = savedBackgroundColor;
+      }
+    </script>    
+    <script>
+      function updateDateTime() {
+        const now = new Date();
+        const dateTimeString = now.toLocaleString();
+        document.getElementById('datetime').textContent = dateTimeString;
+      }
+
+      // Update the datetime on page load
+      updateDateTime();
+
+      // Update the datetime every second
+      setInterval(updateDateTime, 1000);
+    </script>
+  </body>
+</html>
