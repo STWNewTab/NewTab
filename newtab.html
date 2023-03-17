@@ -169,6 +169,10 @@
       else if(savedBackgroundColor){
         document.body.style.backgroundColor = savedBackgroundColor;
       }
+      else{
+        const backgroundImage = 'backgroundNewTab.jpg';
+        document.body.style.backgroundImage = `url(${backgroundImage})`
+      }
     </script>    
     <script>
       function updateDateTime() {
